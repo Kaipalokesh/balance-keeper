@@ -18,7 +18,7 @@ export function splitEqual(amount, ids) {
 export function percentsSumTo100(percents) {
   const values = Object.values(percents).map(Number);
   const sum = values.reduce((a, b) => a + b, 0);
-  return sum === 100;
+  return Math.abs(sum - 100) < 0.01;
 }
 
 export function splitByPercent(amount, percents) {
