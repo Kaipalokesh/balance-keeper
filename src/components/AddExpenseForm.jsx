@@ -64,6 +64,11 @@ export default function AddExpenseForm({ members, onAdd }) {
       date: new Date(date),
       category,
     });
+
+    // Reset form after successful submission
+    setDescription("");
+    setAmount("");
+    setError("");
   }
 
   return (
