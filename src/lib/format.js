@@ -14,5 +14,6 @@ export function formatDate(date) {
 
 export function dateValue(date) {
   if (date instanceof Date) return date.getTime();
+  if (typeof date === "string") return new Date(date).getTime();
   return 0;
 }
