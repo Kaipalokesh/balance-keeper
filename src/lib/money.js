@@ -9,8 +9,9 @@ export function splitEqual(amount, ids) {
   const n = ids.length || 1;
   const share = Number((amount / n).toFixed(2));
   const shares = {};
-  ids.forEach((id) => {
-    shares[id] = share;
+  ids.forEach((id, i) => {
+    // Last person gets remainder to ensure total equals amount
+    shares[id] = i === ids.length - 1 ? Number((amount - share * (ids.length - 1)).toFixed(2)) : share;
   });
   return shares;
 }
@@ -23,9 +24,21 @@ export function percentsSumTo100(percents) {
 
 export function splitByPercent(amount, percents) {
   const shares = {};
-  for (const [id, pct] of Object.entries(percents)) {
-    shares[id] = Number(((amount * Number(pct)) / 100).toFixed(2));
+  const ids = Object.keys(percents);
+  let totalAllocated = 0;
+
+  // Allocate all shares except the last person
+  ids.slice(0, -1).forEach((id) => {
+    const share = Number(((amount * Number(percents[id])) / 100).toFixed(2));
+    shares[id] = share;
+    totalAllocated += share;
+  });
+
+  // Last person gets remainder to ensure total equals amount
+  if (ids.length > 0) {
+    shares[ids[ids.length - 1]] = Number((amount - totalAllocated).toFixed(2));
   }
+
   return shares;
 }
 
