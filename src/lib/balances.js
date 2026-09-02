@@ -12,10 +12,6 @@ export function computeBalances(members, expenses) {
       const key = Number(id);
       bal[key] = (bal[key] || 0) - share;
     }
-
-    if (!exp.splitWith.includes(exp.paidBy)) {
-      bal[exp.paidBy] = (bal[exp.paidBy] || 0) - (shares[exp.paidBy] || 0);
-    }
   }
 
   return bal;
