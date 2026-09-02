@@ -1,8 +1,10 @@
-import { useMemo, useReducer, useState } from "react";
+import { useEffect, useMemo, useReducer, useState } from "react";
 import seed from "./data/seed.json";
 import {
   nextExpenseId,
+  loadState,
   nextMemberId,
+  persistState,
   reducer,
 } from "./state/store.js";
 import { computeBalances } from "./lib/balances.js";
@@ -17,7 +19,11 @@ import SummaryCards from "./components/SummaryCards.jsx";
 const COLORS = ["#5b4b8a", "#1f6f64", "#b85c38", "#3d5a80", "#7a4e2d", "#2c4c3b"];
 
 export default function App() {
-  const [state, dispatch] = useReducer(reducer, seed);
+  const [state, dispatch] = useReducer(reducer, seed, loadState);
+
+  useEffect(() => {
+    persistState(state);
+  }, [state]);
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState("All");
   const [paidBy, setPaidBy] = useState("");
