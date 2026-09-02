@@ -1,5 +1,8 @@
 import { formatMoney } from "../lib/money.js";
 
+/**
+ * Renders the simplified debt transfers required to balance all accounts.
+ */
 export default function SettleUpPanel({ transfers }) {
   return (
     <section className="card">

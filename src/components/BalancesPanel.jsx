@@ -1,5 +1,8 @@
 import { formatMoney } from "../lib/money.js";
 
+/**
+ * Helper to compute 2-character user initials.
+ */
 function initials(name) {
   return name
     .split(" ")
@@ -9,6 +12,11 @@ function initials(name) {
     .toUpperCase();
 }
 
+/**
+ * Displays individual net financial position for each member in the group.
+ * Positive balance = Creditor (is owed money)
+ * Negative balance = Debtor (owes money)
+ */
 export default function BalancesPanel({ members, balances }) {
   return (
     <section className="card">
@@ -17,6 +25,9 @@ export default function BalancesPanel({ members, balances }) {
         const bal = Number(balances[m.id] || 0);
         let label = "settled up";
         let cls = "settled";
+
+        // Positive net balance: group owes this member
+        // Negative net balance: this member owes the group
         if (bal > 0.005) {
           label = `owes ${formatMoney(bal)}`;
           cls = "owe";
@@ -24,6 +35,7 @@ export default function BalancesPanel({ members, balances }) {
           label = `is owed ${formatMoney(-bal)}`;
           cls = "owed";
         }
+
         return (
           <div className="balance-row" key={m.id}>
             <div className="who">

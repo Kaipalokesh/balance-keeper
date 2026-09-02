@@ -1,5 +1,9 @@
 const CATEGORIES = ["All", "Food", "Travel", "Fun", "Stay"];
 
+/**
+ * Filter bar allowing search by description keyword, filter by payer,
+ * and quick-filter category chips.
+ */
 export default function Filters({
   members,
   query,

@@ -2,9 +2,14 @@ import { useMemo, useState } from "react";
 import { formatMoney } from "../lib/money.js";
 import { totalSpent } from "../lib/balances.js";
 
+/**
+ * Top-level dashboard summary card displaying key financial statistics:
+ * total spend, average spend per person, and individual breakdown of amounts paid.
+ */
 export default function SummaryCards({ members, expenses, onAddMember }) {
   const [name, setName] = useState("");
 
+  // Aggregate total out-of-pocket payments per person
   const perPerson = useMemo(() => {
     return members.map((m) => {
       const paid = expenses

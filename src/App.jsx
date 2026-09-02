@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useReducer, useState } from "react";
 import seed from "./data/seed.json";
 import {
-  nextExpenseId,
   loadState,
+  nextExpenseId,
   nextMemberId,
   persistState,
   reducer,
@@ -16,18 +16,22 @@ import Filters from "./components/Filters.jsx";
 import SettleUpPanel from "./components/SettleUpPanel.jsx";
 import SummaryCards from "./components/SummaryCards.jsx";
 
+// Distinct color palette for group members
 const COLORS = ["#5b4b8a", "#1f6f64", "#b85c38", "#3d5a80", "#7a4e2d", "#2c4c3b"];
 
 export default function App() {
+  // Initialize state with lazy hydration from localStorage (or fallback to seed.json)
   const [state, dispatch] = useReducer(reducer, seed, loadState);
-
-  useEffect(() => {
-    persistState(state);
-  }, [state]);
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState("All");
   const [paidBy, setPaidBy] = useState("");
 
+  // Sync state changes to localStorage
+  useEffect(() => {
+    persistState(state);
+  }, [state]);
+
+  // Apply real-time search & filter criteria to expense list
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
     return state.expenses.filter((e) => {
@@ -38,15 +42,19 @@ export default function App() {
     });
   }, [state.expenses, query, category, paidBy]);
 
+  // Memoized balance computation
   const balances = useMemo(
     () => computeBalances(state.members, state.expenses),
     [state.members, state.expenses]
   );
+
+  // Memoized debt settlement transfer calculations
   const transfers = useMemo(
     () => suggestSettlements(balances, state.members),
     [balances, state.members]
   );
 
+  // Action handlers
   function addExpense(partial) {
     dispatch({
       type: "ADD_EXPENSE",

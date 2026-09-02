@@ -3,6 +3,10 @@ import { percentsSumTo100 } from "../lib/money.js";
 
 const CATEGORIES = ["Food", "Travel", "Fun", "Stay"];
 
+/**
+ * Calculates equal baseline percentages for a list of member IDs.
+ * Last member takes any remainder to guarantee total === 100%.
+ */
 function evenPercents(ids) {
   if (!ids.length) return {};
   const base = Number((100 / ids.length).toFixed(2));
@@ -29,6 +33,7 @@ export default function AddExpenseForm({ members, onAdd }) {
     [members, splitWith]
   );
 
+  // Toggle member inclusion in expense split
   function toggleMember(id) {
     setSplitWith((prev) => {
       const next = prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id];
@@ -37,6 +42,7 @@ export default function AddExpenseForm({ members, onAdd }) {
     });
   }
 
+  // Handle form submission with input validation
   function submit(e) {
     e.preventDefault();
     setError("");
@@ -65,7 +71,7 @@ export default function AddExpenseForm({ members, onAdd }) {
       category,
     });
 
-    // Reset form after successful submission
+    // Reset form fields after successful submission
     setDescription("");
     setAmount("");
     setError("");
@@ -158,7 +164,7 @@ export default function AddExpenseForm({ members, onAdd }) {
               checked={splitType === "equal"}
               onChange={() => setSplitType("equal")}
             />
-            Split equally
+              Split equally
           </label>
           <label className="check">
             <input

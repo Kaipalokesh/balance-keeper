@@ -1,5 +1,8 @@
 const KEY = "fairshare-v1";
 
+/**
+ * Hydrates serialized state from localStorage by restoring native Date objects on expenses.
+ */
 function hydrate(data) {
   return {
     groupName: data.groupName,
@@ -11,6 +14,9 @@ function hydrate(data) {
   };
 }
 
+/**
+ * Loads persistent state from localStorage or falls back to the initial seed dataset.
+ */
 export function loadState(seed) {
   try {
     const raw = localStorage.getItem(KEY);
@@ -25,19 +31,31 @@ export function loadState(seed) {
   }
 }
 
+/**
+ * Serializes and syncs application state to browser localStorage.
+ */
 export function persistState(state) {
   localStorage.setItem(KEY, JSON.stringify(state));
 }
 
+/**
+ * Generates unique timestamp-based expense ID.
+ */
 export function nextExpenseId() {
   return `e-${Date.now()}`;
 }
 
+/**
+ * Calculates next incremental member ID.
+ */
 export function nextMemberId(members) {
   const max = members.reduce((m, x) => (x.id > m ? x.id : m), 0);
   return max + 1;
 }
 
+/**
+ * Central state reducer handling expenses (add, update, delete) and new members.
+ */
 export function reducer(state, action) {
   switch (action.type) {
     case "ADD_EXPENSE": {

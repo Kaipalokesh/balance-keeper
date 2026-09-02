@@ -2,6 +2,9 @@ import { useState } from "react";
 import { formatMoney } from "../lib/money.js";
 import { dateValue, formatDate } from "../lib/format.js";
 
+/**
+ * Generates 2-letter uppercase initials from a full name for avatars.
+ */
 function initials(name) {
   return name
     .split(" ")
@@ -11,6 +14,9 @@ function initials(name) {
     .toUpperCase();
 }
 
+/**
+ * Individual expense item with inline editable amount and deletion.
+ */
 function ExpenseRow({ expense, memberMap, onDelete, onSaveAmount }) {
   const [draft, setDraft] = useState(String(expense.amount));
   const payer = memberMap[expense.paidBy];
@@ -52,6 +58,9 @@ function ExpenseRow({ expense, memberMap, onDelete, onSaveAmount }) {
   );
 }
 
+/**
+ * Reverse-chronological list of expenses (newest expenses displayed first).
+ */
 export default function ExpenseList({
   expenses,
   members,
@@ -59,6 +68,7 @@ export default function ExpenseList({
   onUpdateAt,
 }) {
   const memberMap = Object.fromEntries(members.map((m) => [m.id, m]));
+  // Sort descending by timestamp (newest first)
   const sorted = [...expenses].sort((a, b) => dateValue(b.date) - dateValue(a.date));
 
   return (
